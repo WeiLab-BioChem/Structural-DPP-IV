@@ -4,15 +4,14 @@ import torch.nn.functional as F
 
 max_seq_len: int
 dataset_name: str = 'DPP-IV'
-kmer: bool
 
 
 # noinspection PyShadowingNames
-class MGFTextCNN(nn.Module):
+class StructuralDPPIV(nn.Module):
     def __init__(self, config):
-        super(MGFTextCNN, self).__init__()
-        self.MGF = MGFTextCNN_MGF(config)
-        self.TextCNN = MGFTextCNN_TextCNN()
+        super(StructuralDPPIV, self).__init__()
+        self.StructEncodeModule = Structural(config)
+        self.TextCNN = TextCNN()
 
         self.classification = nn.Sequential(
             nn.Linear(1024, 64),
@@ -24,31 +23,21 @@ class MGFTextCNN(nn.Module):
         self.Wh = nn.Parameter(torch.randn(1, 1024).cuda(), requires_grad=True)
 
     def forward(self, x):
-        """
-        x contains sequence info and MGF embedding.
-        """
-        TextCNN_Only = False
+        TextCNN_Only = True
         if not TextCNN_Only:
-            TextCNN_representation = self.TextCNN(x[0])
-            MGF_representation = self.MGF(x[1])
-            new_rep = TextCNN_representation * MGF_representation
-            output = self.classification(new_rep)
-            return output, new_rep
+            TextCNNEncode = self.TextCNN(x[0])
+            StructedEncode = self.StructEncodeModule(x[1])
+            newEncode = TextCNNEncode * StructedEncode
+            output = self.classification(newEncode)
+            return output, newEncode
         else:
-            TextCNN_representation = self.TextCNN(x[0])
-            output = self.classification(TextCNN_representation)
-            return output, TextCNN_representation
+            TextCNNEncode = self.TextCNN(x[0])
+            output = self.classification(TextCNNEncode)
+            return output, TextCNNEncode
 
-# [INFO]	max len of dataset `DPP-IV train`: 90
-# [INFO]	min len of dataset `DPP-IV train`: 2
-# [INFO]	sequence number of DPP-IV train: 1063
-#
-# [INFO]	max len of dataset `DPP-IV test`: 75
-# [INFO]	min len of dataset `DPP-IV test`: 2
-# [INFO]	sequence number of DPP-IV test: 266
-class MGFTextCNN_TextCNN(nn.Module):
+class TextCNN(nn.Module):
     def __init__(self):
-        super(MGFTextCNN_TextCNN, self).__init__()
+        super(TextCNN, self).__init__()
         self.visualization = False
         vocab_size = 24
         dim_embedding = 100
@@ -74,19 +63,15 @@ class MGFTextCNN_TextCNN(nn.Module):
         return embedding
 
 
-class MGFTextCNN_MGF(nn.Module):
+class Structural(nn.Module):
     def __init__(self, config):
-        super(MGFTextCNN_MGF, self).__init__()
+        super(Structural, self).__init__()
         self.config = config
         self.inpuchannel = [32, 32, 64]
         global dataset_name
-        global kmer
-        kmer, dataset_name = self.config.kmer, 'DPP-IV'
+        dataset_name = 'DPP-IV'
 
-        if config.featureNum == 'more':
-            self.embedding_dim = 21  # the MGF process dim
-        elif config.featureNum == 'less':
-            self.embedding_dim = 19
+        self.embedding_dim = 21
         global max_seq_len
         max_seq_len = config.max_seq_len
         self.conv = torch.nn.Conv2d(self.embedding_dim, self.inpuchannel[0], (3, 3), stride=1, padding='same')

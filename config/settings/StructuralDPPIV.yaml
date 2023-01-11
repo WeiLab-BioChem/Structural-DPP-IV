@@ -4,21 +4,16 @@ command: script-test
 k_fold: 5
 max_length: 90
 onehot: False
-model: 'MGFPaddingZero'
-model_hparams: 'MGFPaddingZero.yaml'
+model: 'StructuralDPPIV'
+model_hparams: 'StructuralDPPIV.yaml'
 auto_ml: false
 nni_metric: 'ACC'
 output_dir: null
 padding: 'max_length'
 path_visual_data: null
-project_name: MGFPaddingZero
+project_name: StructuralDPPIV
 proportion: null
 
 return_tensors: 'pt'
 seed: 9999
 train_mode: 'train'
-
-featureNum: 'more'
-shape: 'channel'
-dataAugment: False
-dim: 'paddingZero'

@@ -41,9 +41,9 @@ def load_DPP_IV_data(type_: str = 'train') -> (List[str], List[int]):
     if type_ == 'valid':
         type_ = 'test'
     if type_ == 'train':
-        filename = '../data/WenJia/Others/DPP-IV inhibitory peptide/train/train.tsv'
+        filename = '../data/DPP-IV/train/train.tsv'
     else:
-        filename = '../data/WenJia/Others/DPP-IV inhibitory peptide/test/test.tsv'
+        filename = '../data/DPP-IV/test/test.tsv'
     all_sequences, all_labels = load_tsv_format_data(filename)
     print("\n[INFO]\tmax len of dataset `DPP-IV {}`: {}".format(type_,
                                                                 max([len(seq) for seq in all_sequences])))

@@ -6,7 +6,7 @@ import torch.utils.data as Data
 from pytorch_lightning.core import LightningDataModule
 from torch.utils.data import DataLoader
 
-from data import MGF
+from data import Encode
 from util.util_file import method_driver
 
 
@@ -58,8 +58,6 @@ class SeqDataModule(LightningDataModule):
         pass
 
     def setup(self, stage=None):
-        # Note that dataset length may not equal to the number of records in original file,
-        # because we may use augmentation to generate more data.
         dataset_name = get_dataset_name(self.args.path_train_data)
         MAX_SEQ_LEN: int = self.args.max_seq_len
         # if dataset_name directly not in ../cooked_data, then create folder ../cooked_data/<dataset_name>
@@ -79,13 +77,14 @@ class SeqDataModule(LightningDataModule):
             else:
                 raise ValueError('dataset_name {} not supported. Expected DPP-IV.'.format(dataset_name))
 
-
-            train_set_len = MGF.construct_MGFDataset_sequence(dataset_name, 'train', self.raw_train_data,
-                                                              self.raw_train_label, use_cooked_data=use_cooked_data,
-                                                              max_seq_len=MAX_SEQ_LEN)
-            valid_set_len = MGF.construct_MGFDataset_sequence(dataset_name, 'valid', self.raw_valid_data,
-                                                              self.raw_valid_label, use_cooked_data=use_cooked_data,
-                                                              max_seq_len=MAX_SEQ_LEN)
+            train_set_len = Encode.construct_StructDataset_Sequence(dataset_name, 'train', self.raw_train_data,
+                                                                    self.raw_train_label,
+                                                                    use_cooked_data=use_cooked_data,
+                                                                    max_seq_len=MAX_SEQ_LEN)
+            valid_set_len = Encode.construct_StructDataset_Sequence(dataset_name, 'valid', self.raw_valid_data,
+                                                                    self.raw_valid_label,
+                                                                    use_cooked_data=use_cooked_data,
+                                                                    max_seq_len=MAX_SEQ_LEN)
             self.train_dataset = SeqDataSet(dataset_name, 'train', train_set_len)
             self.valid_dataset = SeqDataSet(dataset_name, 'valid', valid_set_len)
             print('self.train_dataset', len(self.train_dataset))
@@ -93,8 +92,8 @@ class SeqDataModule(LightningDataModule):
         elif stage == 'test' or stage is None:
             self.raw_test_data, self.raw_test_label = method_driver(dataset_name, 'test', test_sub_set)
             test_set_len = len(self.raw_test_data)
-            MGF.construct_MGFDataset_sequence(dataset_name, 'test', self.raw_test_data, self.raw_test_label,
-                                              use_cooked_data=use_cooked_data, max_seq_len=MAX_SEQ_LEN, )
+            Encode.construct_StructDataset_Sequence(dataset_name, 'test', self.raw_test_data, self.raw_test_label,
+                                                    use_cooked_data=use_cooked_data, max_seq_len=MAX_SEQ_LEN, )
             self.test_dataset = SeqDataSet(dataset_name, 'test', test_set_len)
             print('self.test_dataset', len(self.test_dataset))
 

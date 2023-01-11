@@ -9,7 +9,7 @@ class TextCNN(nn.Module):
         self.config = config
 
         self.filter_sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256]
-        self.embedding_dim = 21  # the MGF process dim
+        self.embedding_dim = 21
         filter_num = 64
         self.convs = nn.ModuleList(
             [nn.Conv2d(1, filter_num, (fsz, self.embedding_dim)) for fsz in self.filter_sizes])

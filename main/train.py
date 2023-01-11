@@ -13,7 +13,6 @@ from module.lightning_data_module import SeqDataModule
 from module.lightning_frame_module import SeqLightningModule
 from util import util_metric
 
-
 cur_path = os.path.abspath(os.path.dirname(__file__))
 root_path = os.path.split(cur_path)[0]
 if root_path not in sys.path:
@@ -40,6 +39,7 @@ def run(args):
     metric_df = util_metric.print_results(test_result)
     return metric_df
 
+
 def use_dataset(config_dict, dataset_name, train_sub_set: str = None, valid_sub_set: str = None,
                 test_sub_set: str = None):
     config_dict['dataset_name'] = dataset_name
@@ -52,19 +52,18 @@ def use_dataset(config_dict, dataset_name, train_sub_set: str = None, valid_sub_
     config_dict['test_sub_set'] = test_sub_set if test_sub_set is not None else valid_sub_set
     assert config_dict['max_seq_len'] > 0
 
+
 def start_single_train(data_type):
     os.environ["CUDA_VISIBLE_DEVICES"] = '0,1,2,3'
     config_dict = load_config.load_default_args_dict(data_type)
     config_dict['max_epochs'] = 150
-    config_dict['gpus'] = [2]   # using which GPU to train
+    config_dict['gpus'] = [0]  # using which GPU to train
     config_dict['batch_size'] = 32
     config_dict['lr'] = 0.000005
-    config_dict['model'] = 'MGFPaddingZero_TextCNN'
+    config_dict['model'] = 'StructuralDPPIV'
     config_dict['log_dir'] = constant['path_log']
-    # ---------------------------------------------- #
     use_dataset(config_dict, 'DPP-IV')
-    # ---------------------------------------------- #
-    config_dict['use_cooked_data'] = False
+    config_dict['use_cooked_data'] = True
     args = argparse.Namespace(**config_dict)
     print('args', args)
     run(args)
@@ -72,6 +71,6 @@ def start_single_train(data_type):
 
 if __name__ == '__main__':
     start_time = time.time()
-    start_single_train('MGFPaddingZero')
+    start_single_train('StructuralDPPIV')
     end_time = time.time()
     print('training time', (end_time - start_time) / 60, '(min)')

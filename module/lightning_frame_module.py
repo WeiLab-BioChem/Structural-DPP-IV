@@ -10,7 +10,7 @@ from sklearn.metrics import precision_score, recall_score, f1_score, fbeta_score
 from torch import Tensor
 from torch.optim import Adam, SGD, Adagrad, RMSprop
 
-from model import FocalLoss, MGFPaddingZero_TextCNN
+from model import FocalLoss, StructuralDPPIV
 
 
 # noinspection PyUnresolvedReferences,PyAttributeOutsideInit,PyUnboundLocalVariable
@@ -24,7 +24,7 @@ class SeqLightningModule(LightningModule):
         self.val_epoch_performance, self.test_performance = [], []
 
     def configure_model(self):
-        self.model = MGFPaddingZero_TextCNN.MGFTextCNN(self.args)
+        self.model = StructuralDPPIV.StructuralDPPIV(self.args)
 
     def on_fit_start(self) -> None:
         pytorch_lightning.seed_everything(self.args.seed, workers=True)

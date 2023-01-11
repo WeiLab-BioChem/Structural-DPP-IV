@@ -8,7 +8,7 @@ import torch.nn.utils.rnn as rnn_utils
 from torch import Tensor
 from tqdm import tqdm
 
-from data import MGF_enhance
+from data import StructuralEncode
 
 aa_dict = {'A': 1, 'R': 2, 'N': 3, 'D': 4, 'C': 5, 'Q': 6, 'E': 7, 'G': 8, 'H': 9, 'I': 10,
            'L': 11, 'K': 12, 'M': 13, 'F': 14, 'P': 15, 'O': 16, 'S': 17, 'U': 18, 'T': 19,
@@ -40,32 +40,9 @@ def store_one(dataset_name, type_, data_, label, index):
         pkl.dump(tup, f)
 
 
-def construct_MGFDataset(dataset_name: str, type_: str, sequences, labels,
-                         cubeBiased=False, cubeBias=0.2, right_align=False,
-                         use_cooked_data=False, max_seq_len=61) -> int:
-    global MAX_SEQ_LEN
-    MAX_SEQ_LEN = max_seq_len
-    if use_cooked_data:
-        data_num = detect_max_index_pkl_in_path(os.path.join('..', 'cooked_data', dataset_name, type_)) + 1
-        return data_num
-    original_set_len = len(sequences)
-    index = 0
-    Labels = labels
-    for i in tqdm(range(len(sequences))):
-        MGFdata = construct_seq(sequences[i], cubeBiased=cubeBiased, cubeBias=cubeBias, right_align=right_align)
-        store_one(dataset_name, type_, torch.FloatTensor(MGFdata), Labels[index], index)
-        index += 1
-    return original_set_len
-
-
-def construct_MGFDataset_sequence(dataset_name: str, type_: str, sequences: list[str], labels, cubeBiased=False,
-                                  cubeBias=0.2, right_align=False, use_cooked_data=False, max_seq_len: int = 90) -> int:
-    """
-    构建数据集的文件
-    :return: data, label, 数据增广情况下的也会返回，如果是100， len就会是400
-    for now, if you don't want use `kmer`, some changes in linear layer of MGFPaddingZero.py shall be made.
-    Or else the script cannot run.
-    """
+def construct_StructDataset_Sequence(dataset_name: str, type_: str, sequences: list[str], labels, cubeBiased=False,
+                                     cubeBias=0.2, right_align=False, use_cooked_data=False,
+                                     max_seq_len: int = 90) -> int:
     global MAX_SEQ_LEN
     MAX_SEQ_LEN = max_seq_len
     if use_cooked_data:
@@ -75,21 +52,19 @@ def construct_MGFDataset_sequence(dataset_name: str, type_: str, sequences: list
     sequences_code = codePeptides(sequences)
     index = 0
     for i in tqdm(range(len(sequences))):
-        MGFdata = construct_seq(sequences[i], cubeBiased=cubeBiased, cubeBias=cubeBias, right_align=right_align)
-        store_one(dataset_name, type_, data_=(sequences_code[index], torch.FloatTensor(MGFdata)),
+        StructedData = construct_seq(sequences[i], cubeBiased=cubeBiased, cubeBias=cubeBias, right_align=right_align)
+        store_one(dataset_name, type_, data_=(sequences_code[index], torch.FloatTensor(StructedData)),
                   label=labels[index], index=index)
         index += 1
     return index
 
 
 def construct_seq(sequence, cubeBiased=False, cubeBias=0.2, right_align=False):
-    MGF = MGF_enhance
-    MGFChannel = MGF.convert_to_graph_channel(sequence)
-    MGFdata = MGF.convert_to_graph_channel_returning_maxSeqLenx15xfn(MGFChannel, cubeBiased=cubeBiased,
-                                                                     maxSeqLen=MAX_SEQ_LEN, cubeBias=cubeBias,
-                                                                     right_align=right_align)
-
-    return MGFdata
+    SE = StructuralEncode
+    Channel = SE.convert_to_graph_channel(sequence)
+    return SE.convert_to_graph_channel_returning_maxSeqLenx15xfn(Channel, cubeBiased=cubeBiased,
+                                                                 maxSeqLen=MAX_SEQ_LEN, cubeBias=cubeBias,
+                                                                 right_align=right_align)
 
 
 # noinspection GrazieInspection
