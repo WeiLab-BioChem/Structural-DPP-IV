@@ -23,17 +23,23 @@ class StructuralDPPIV(nn.Module):
         self.Wh = nn.Parameter(torch.randn(1, 1024).cuda(), requires_grad=True)
 
     def forward(self, x):
-        TextCNN_Only = True
-        if not TextCNN_Only:
+        TextCNN_Only = False
+        StructuralEncodingOnly = False
+        assert not (TextCNN_Only and StructuralEncodingOnly)
+        if not TextCNN_Only and not StructuralEncodingOnly:
             TextCNNEncode = self.TextCNN(x[0])
             StructedEncode = self.StructEncodeModule(x[1])
             newEncode = TextCNNEncode * StructedEncode
             output = self.classification(newEncode)
             return output, newEncode
-        else:
+        elif TextCNN_Only:
             TextCNNEncode = self.TextCNN(x[0])
             output = self.classification(TextCNNEncode)
             return output, TextCNNEncode
+        elif StructuralEncodingOnly:
+            StructedEncode = self.StructEncodeModule(x[1])
+            output = self.classification(StructedEncode)
+            return output, StructedEncode
 
 class TextCNN(nn.Module):
     def __init__(self):
