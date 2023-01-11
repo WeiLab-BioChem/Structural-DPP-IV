@@ -1,0 +1,24 @@
+add_special_tokens: False
+checkpoint: null
+command: script-test
+k_fold: 5
+max_length: 90
+onehot: False
+model: 'MGFPaddingZero'
+model_hparams: 'MGFPaddingZero.yaml'
+auto_ml: false
+nni_metric: 'ACC'
+output_dir: null
+padding: 'max_length'
+path_visual_data: null
+project_name: MGFPaddingZero
+proportion: null
+
+return_tensors: 'pt'
+seed: 9999
+train_mode: 'train'
+
+featureNum: 'more'
+shape: 'channel'
+dataAugment: False
+dim: 'paddingZero'

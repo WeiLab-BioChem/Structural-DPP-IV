@@ -1,0 +1,25 @@
+add_special_tokens: False
+#checkpoint: '../log/test_CKPT.ckpt'
+checkpoint: null
+command: script-test
+k_fold: 5
+max_length: 90
+onehot: True
+model: 'MGFTextCNN'
+model_hparams: 'MGFTextCNN.yaml'
+auto_ml: false
+nni_metric: 'F1'
+output_dir: null
+padding: 'max_length'
+path_visual_data: null
+project_name: MGFTextCNN
+proportion: null
+gpus: 1
+return_tensors: 'pt'
+seed: 9999
+train_mode: 'train'
+
+featureNum: 'less'
+shape: 'sequence'
+dataAugment: False
+dim: 'none'

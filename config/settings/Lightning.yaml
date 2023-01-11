@@ -1,0 +1,15 @@
+accelerator: gpu
+auto_select_gpus: true
+batch_size: 64
+benchmark: true # false
+cuda: true
+fast_dev_run: false # stop training after dev run if true
+gpus: [ 1 ]
+log_every_n_steps: 1
+max_epochs: 100
+num_class: 2
+num_nodes: 1
+num_workers: 0
+optimizer: Adam # choices=['Adam', 'SGD', 'Adagrad', 'RMSprop']
+stochastic_weight_avg: true # is deprecated in v1.5 and will be removed in v1.7
+strategy: null
