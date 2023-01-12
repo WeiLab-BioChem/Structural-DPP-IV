@@ -11,6 +11,22 @@ Project code of the paper [StructuralDPP-IV: A novel atom-structure based peptid
 
 ### Requirements
 
+```text
+dependencies:
+  - torchaudio
+  - torchvision
+  - pytorch
+  - cudatoolkit=11.3
+  - pyg
+  - rdkit
+  - pytdc
+  - pytorch-lightning
+  - nb_conda
+  - transformers
+  - pynvml
+```
+
+
 
 ## Usage
 

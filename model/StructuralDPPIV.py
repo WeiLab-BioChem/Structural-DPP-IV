@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from module.lightning_data_module import now_stage
 
 max_seq_len: int
 dataset_name: str = 'DPP-IV'
@@ -48,7 +49,8 @@ class TextCNN(nn.Module):
         vocab_size = 24
         dim_embedding = 100
         print(f"[INFO] using CNN config of {dataset_name}")
-        filter_sizes = [1, 2, 4, 8, 16, 24, 32, 48, 64]
+        # filter_sizes = [1, 2, 4, 8, 16, 24, 32, 48, 64]
+        filter_sizes = [1, 2]
         filter_num = 90
         self.embedding = nn.Embedding(vocab_size, dim_embedding)
         self.convs = nn.ModuleList(

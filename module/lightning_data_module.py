@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from data import Encode
 from util.util_file import method_driver
 
-
+now_stage = None
 def get_data_from_disk(dataset_name: str, type_, index):
     # path: ../cooked_data/<dataset_name>/<type_>/<index>.pkl
     path = os.path.join('../cooked_data', get_dataset_name(dataset_name), type_, str(index) + '.pkl')
@@ -90,9 +90,11 @@ class SeqDataModule(LightningDataModule):
             print('self.train_dataset', len(self.train_dataset))
             print('self.valid_dataset', len(self.valid_dataset))
         elif stage == 'test' or stage is None:
+            global now_stage
+            now_stage = 'test'
             self.raw_test_data, self.raw_test_label = method_driver(dataset_name, 'test', test_sub_set)
-            test_set_len = len(self.raw_test_data)
-            Encode.construct_StructDataset_Sequence(dataset_name, 'test', self.raw_test_data, self.raw_test_label,
+            # test_set_len = len(self.raw_test_data)
+            test_set_len = Encode.construct_StructDataset_Sequence(dataset_name, 'test', self.raw_test_data, self.raw_test_label,
                                                     use_cooked_data=use_cooked_data, max_seq_len=MAX_SEQ_LEN, )
             self.test_dataset = SeqDataSet(dataset_name, 'test', test_set_len)
             print('self.test_dataset', len(self.test_dataset))

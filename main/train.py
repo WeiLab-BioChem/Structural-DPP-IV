@@ -57,7 +57,7 @@ def start_single_train(data_type):
     os.environ["CUDA_VISIBLE_DEVICES"] = '0,1,2,3'
     config_dict = load_config.load_default_args_dict(data_type)
     config_dict['max_epochs'] = 150
-    config_dict['gpus'] = [0]  # using which GPU to train
+    config_dict['gpus'] = [3]  # using which GPU to train
     config_dict['batch_size'] = 32
     config_dict['lr'] = 0.000005
     config_dict['model'] = 'StructuralDPPIV'

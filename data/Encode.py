@@ -67,7 +67,6 @@ def construct_seq(sequence, cubeBiased=False, cubeBias=0.2, right_align=False):
                                                                  right_align=right_align)
 
 
-# noinspection GrazieInspection
 def codePeptides(peptideSeq: Iterable[str]) -> Tensor:
     pep_codes = []
     for pep in peptideSeq:
@@ -87,4 +86,16 @@ def code_one_peptide(peptideSeq: str) -> Tensor:
 
 
 if __name__ == '__main__':
+    # WPX, WAX, WRX, and WVX
+    all_possible_aa = 'ACDEFGHIKLMNPQRSTVWY'
+    seqs = []
+    for pre in ['WP', 'WA', 'WR', 'WV']:
+        for aa in all_possible_aa:
+            seqs.append(pre + aa)
+    # WPI, WPK, WAS, WRK, WRR, WVI, WVR is False, others are True
+    labels = [1] * 80
+    for i, seq in enumerate(seqs):
+        if seq in ['WPI', 'WPK', 'WAS', 'WRK', 'WRR', 'WVI', 'WVR']:
+            labels[i] = 0
+    construct_StructDataset_Sequence('DPP-IV', 'test', sequences=seqs, labels=labels, use_cooked_data=False, max_seq_len=90)
     pass
