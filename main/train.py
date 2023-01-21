@@ -64,6 +64,7 @@ def start_single_train(data_type):
     config_dict['log_dir'] = constant['path_log']
     use_dataset(config_dict, 'DPP-IV')
     config_dict['use_cooked_data'] = True
+    # config_dict['use_cooked_data'] = False  # when you first run the code, set this to False
     args = argparse.Namespace(**config_dict)
     print('args', args)
     run(args)

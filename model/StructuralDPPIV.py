@@ -25,7 +25,7 @@ class StructuralDPPIV(nn.Module):
 
     def forward(self, x):
         TextCNN_Only = False
-        StructuralEncodingOnly = False
+        StructuralEncodingOnly = True
         assert not (TextCNN_Only and StructuralEncodingOnly)
         if not TextCNN_Only and not StructuralEncodingOnly:
             TextCNNEncode = self.TextCNN(x[0])
@@ -78,7 +78,7 @@ class Structural(nn.Module):
         self.inpuchannel = [32, 32, 64]
         global dataset_name
         dataset_name = 'DPP-IV'
-
+        print(f"[INFO] using Structural config of {dataset_name}")
         self.embedding_dim = 21
         global max_seq_len
         max_seq_len = config.max_seq_len
@@ -89,9 +89,10 @@ class Structural(nn.Module):
         self.linear = nn.Linear(23552, 1024)
 
     def forward(self, graph):
-        graph = graph.cuda()
-        graph = graph.transpose(2, 3)
-        graph = graph.transpose(1, 2)
+        # 90 is the max length of sequence, 15 is the number of amino acid, 21 is the number of channel
+        graph = graph.cuda()  # (batchSize, 90, 15, 21)
+        graph = graph.transpose(2, 3)  # (batchSize, 90, 21, 15)
+        graph = graph.transpose(1, 2)   # (batchSize, 21, 90, 15)
         representation = self.conv(graph)
         representation = self.resBlock1(representation)
         representation = self.resBlock2(representation)

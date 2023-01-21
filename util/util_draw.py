@@ -63,7 +63,18 @@ def plot_2d_array(matrix: np.ndarray, title: str = "2d array", s=100, marker='o'
     plt.show()
 
 
+def plot_bar(Xdata, Ydata, title, xlabel, ylabel, xticks=None, yticks=None, xticklabels=None, yticklabels=None):
+    fig = plt.figure()
+    plt.bar(Xdata, Ydata)
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.show()
+
+
 if __name__ == '__main__':
     # test 4d array
-    cubes__ = np.random.rand(8, 8, 8, 8)
-    plot_4d_array(cubes__, "4d array", alpha=0.05)
+    # cubes__ = np.random.rand(8, 8, 8, 8)
+    # plot_4d_array(cubes__, "4d array", alpha=0.05)
+
+    plot_bar([1,2],[1,2])
