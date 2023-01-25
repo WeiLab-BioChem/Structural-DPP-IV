@@ -25,7 +25,7 @@ class StructuralDPPIV(nn.Module):
 
     def forward(self, x):
         TextCNN_Only = False
-        StructuralEncodingOnly = True
+        StructuralEncodingOnly = False
         assert not (TextCNN_Only and StructuralEncodingOnly)
         if not TextCNN_Only and not StructuralEncodingOnly:
             TextCNNEncode = self.TextCNN(x[0])
