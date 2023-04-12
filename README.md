@@ -33,4 +33,4 @@ dependencies:
 
 ## Contacts
 
-If you have any questions or suggestions, please contact us [here](https://www.baidu.com).
+If you have any questions or suggestions, please contact us [here](http://wei-group.net/).
