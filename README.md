@@ -1,4 +1,4 @@
-# Structural-DPPIV
+# StructuralDPPIV
 
 > This project is made possible by the [Wei Group](http://wei-group.net/) @ Shandong University. 
 > All the code is under [MIT License](https://opensource.org/licenses/MIT).
