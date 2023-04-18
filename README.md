@@ -1,10 +1,10 @@
-# Structural-DPP-IV
+# Structural-DPPIV
 
 > This project is made possible by the [Wei Group](http://wei-group.net/) @ Shandong University. 
 > All the code is under [MIT License](https://opensource.org/licenses/MIT).
 
 
-Project code of the paper StructuralDPP-IV: A novel atom-structure based model for discovering dipeptidyl peptidase-IV inhibitory peptides.
+Project code of the paper StructuralDPPIV: A novel atom-structure based model for discovering dipeptidyl peptidase-IV inhibitory peptides.
 
 ## Installation
 
