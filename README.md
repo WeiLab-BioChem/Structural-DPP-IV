@@ -24,6 +24,8 @@ dependencies:
   - nb_conda
   - transformers
   - pynvml
+  - grad-cam
+  - tdqm
 ```
 
 
