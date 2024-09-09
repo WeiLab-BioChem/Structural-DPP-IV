@@ -20,7 +20,7 @@ dependencies:
   - pyg
   - rdkit
   - pytdc
-  - pytorch-lightning
+  - pytorch-lightning==1.9
   - nb_conda
   - transformers
   - pynvml
@@ -32,7 +32,18 @@ dependencies:
 
 ## Usage
 
+### Training
+
+For training the model, you can run `main/train.py` to train the model. The training process will be saved in the `./logs` directory. To see the training process, you can run `tensorboard --logdir ./logs` and open the browser to `http://localhost:6006/`.
+
+
+### Testing
+
+We provide a trained model in `https://drive.google.com/drive/folders/18Kb81AED8_dNEdQ_uQ8jYtyoPmOySd_a?usp=drive_link`. You can download the model and put it in the `./ckpt` directory. Then you can run `main/test.py` to test the model, or use your own data/trained model to see the results.
+
+
+
 
 ## Contacts
 
-If you have any questions or suggestions, please contact us [here](http://wei-group.net/).
+If you have any questions or suggestions, please contact us [here](http://wei-group.net/), or mail to scholarwd [at] gmail [dot] com.
