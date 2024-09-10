@@ -4,7 +4,7 @@
 > All the code is under [MIT License](https://opensource.org/licenses/MIT).
 
 
-Project code of the paper StructuralDPPIV: A novel atom-structure based model for discovering dipeptidyl peptidase-IV inhibitory peptides.
+Project code of the paper [StructuralDPPIV: A novel atom-structure based model for discovering dipeptidyl peptidase-IV inhibitory peptides.](https://academic.oup.com/bioinformatics/article/40/2/btae057/7596623)
 
 ## Installation
 
