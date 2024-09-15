@@ -13,6 +13,7 @@ Project code of the paper [StructuralDPPIV: A novel atom-structure based model f
 
 ```text
 dependencies:
+  - Python 3.10.13 (recommonded)
   - torchaudio
   - torchvision
   - pytorch
